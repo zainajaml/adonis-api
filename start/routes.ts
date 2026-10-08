@@ -28,10 +28,21 @@ router
     router
       .group(() => {
         router.get('profile', [controllers.Profile, 'show'])
+        router.patch('profile', [controllers.Profile, 'update'])
         router.post('logout', [controllers.AccessTokens, 'destroy'])
+        router.delete('', [controllers.Profile, 'destroy'])
       })
       .prefix('account')
       .as('profile')
+      .use(middleware.auth())
+
+    router
+      .group(() => {
+        router.get('/', [controllers.Users, 'index'])
+        router.get(':id', [controllers.Users, 'show'])
+      })
+      .prefix('users')
+      .as('users')
       .use(middleware.auth())
   })
   .prefix('/api/v1')
